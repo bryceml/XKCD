@@ -2,7 +2,7 @@
 <head>
 <title>XKCD</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-
+<script src="http://code.responsivevoice.org/responsivevoice.js"></script>
 </head>
 <body>
 
@@ -23,21 +23,33 @@ $("#submit").click(function () {
         dataType : "jsonp",
         success : function(parsed_json) {
             var rand = Math.floor(Math.random() * (parsed_json.num + 1));
-            
+
             $.ajax({
                 url : myurl + "/" + rand,
                 crossDomain : true,
                 dataType : "jsonp",
                 success : function (json) {
-                    $("#xkcd").html (
-                        "<img src = '" + json.img +"'>"
+                    var read_text = json.transcript.split("[").join("").split("]").join("").split(":").join("").split("{").join("").split("}").join("").split("<").join("").split(">").join("");
+                    // Should get rid of all conflicting special characters, I'm sure there's a better way of doing this -- may need to add more
+                    
+                    // buttons could be improved
+                    $("#xkcd").html ("<img src = '" + json.img +"'>" + 
+                        "<br><br><button type='button' id='play' onclick='play()'>Play</button><button type='button' id='pause' onclick='pause()'>Pause</button><br><br>"
                     );
-                    console.log (json);
+                    responsiveVoice.speak(read_text); // probably better to not have this automatic
                 }
             });
         }
     });
 }); 
+
+function play () {
+    responsiveVoice.resume();
+}
+
+function pause () {
+    responsiveVoice.pause();
+}
 
 </script>
 
