@@ -1,34 +1,40 @@
 <html>
 <head>
-<title>City Finder</title>
+<title>XKCD</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
 </head>
 <body>
 
 
-<button type="button" id="submit">Submit</button>
-
 <h1>Comic</h1>
 <div id="xkcd"></div>
 
-
+<button type="button" id="submit">Get a Random Comic</button>
 
 <script>
 
 $("#submit").click(function () {
-    var city = $('#xkcd').val();
-    $("#xkcd").text(city);
-    
+
     var myurl= "http://dynamic.xkcd.com/api-0/jsonp/comic";
-    console.log(myurl);
     $.ajax({
         url : myurl,
         crossDomain : true,
         dataType : "jsonp",
         success : function(parsed_json) {
-            console.log(parsed_json.num);
-            // $("#weather").html(everything);
+            var rand = Math.floor(Math.random() * (parsed_json.num + 1));
+            
+            $.ajax({
+                url : myurl + "/" + rand,
+                crossDomain : true,
+                dataType : "jsonp",
+                success : function (json) {
+                    $("#xkcd").html (
+                        "<img src = '" + json.img +"'>"
+                    );
+                    console.log (json);
+                }
+            });
         }
     });
 }); 
