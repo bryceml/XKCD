@@ -23,25 +23,25 @@ $("#submit").click(function () {
         dataType : "jsonp",
         success : function(parsed_json) {
             var rand = Math.floor(Math.random() * (parsed_json.num + 1));
-
+            console.log(rand);
             $.ajax({
                 url : myurl + "/" + rand,
                 crossDomain : true,
                 dataType : "jsonp",
                 success : function (json) {
-                    var read_text = json.transcript.split("[").join("").split("]").join("").split(":").join("").split("{").join("").split("}").join("").split("<").join("").split(">").join("");
+                    var read_text = json.transcript.split("[").join("").split("]").join("").split(":").join(",").split("{").join("").split("}").join("").split("<").join("").split(">").join("").split("\n").join("  ").split("*").join("");
                     // Should get rid of all conflicting special characters, I'm sure there's a better way of doing this -- may need to add more
-                    
+
                     // buttons could be improved
-                    $("#xkcd").html ("<img src = '" + json.img +"'>" + 
+                    $("#xkcd").html ("<img src = '" + json.img +"'>" +
                         "<br><br><button type='button' id='play' onclick='play()'>Play</button><button type='button' id='pause' onclick='pause()'>Pause</button><br><br>"
                     );
-                    responsiveVoice.speak(read_text); // probably better to not have this automatic
+                    responsiveVoice.speak(read_text, "US English Female"); // probably better to not have this automatic
                 }
             });
         }
     });
-}); 
+});
 
 function play () {
     responsiveVoice.resume();
