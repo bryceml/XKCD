@@ -88,7 +88,7 @@
               console.log("Original:\n" + json.transcript);
               read_text = json.transcript.split("[").join("").split("]").join("").split(":").join(",").split("{").join("").split("}").join("").split("<").join("").split(">").join("").split("*").join("").split("_").join("");
               if (read_text === "") {
-                read_text = json.alt;
+                read_text = "Sorry, but there is no transcript available for this comic.";
               }
               // Should get rid of all conflicting special characters, I'm sure there's a better way of doing this -- may need to add more
 
