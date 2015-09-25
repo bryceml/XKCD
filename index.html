@@ -1,58 +1,123 @@
 <html>
+
 <head>
-<title>XKCD</title>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+  <title>XKCD</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <style>
+    * {
+      text-align: center;
+    }
+
+    .bottom {
+      display: inline-block;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="col-md-12">
+    <h1 id="theTitle"></h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+
+  <div id="xkcd" class="col-md-10"></div>
+  </div>
+  <div class="col-md-12 bottom">
+    <br>
+    <br>
+    <button type='button' id='resume'>Resume</button>
+    <button type='button' id='pause'>Pause</button>
+    <button type='button' id='play'>Play</button>
+    <br>
+    <br>
+    <button type="button" id="previous">Previous</button>
+    <button type="button" id="submit">Get a Random Comic</button>
+    <button type="button" id="next">Next</button>
+    <div class="col-md-1"></div>
+    <script>
+      $(document).ready(function() {
+        var rand;
+        var num;
+        var myurl = "http://dynamic.xkcd.com/api-0/jsonp/comic";
+        var read_text;
+        $.ajax({
+          url: myurl,
+          crossDomain: true,
+          dataType: "jsonp",
+          success: function(parsed_json) {
+            num = parsed_json.num;
+            rand = parsed_json.num;
+            console.log("num = " + num);
+            console.log("rand = " + rand);
+            console.log("Most Recent Comic:" + num);
+            run();
+          }
+        });
+
+        $("#previous").click(function() {
+          if (rand > 1) {
+            rand--;
+            run();
+          }
+        });
+        $("#next").click(function() {
+          console.log("next got clicked:" + rand + num);
+          if (rand < num) {
+            rand++;
+            run();
+          }
+        });
 
 
-<h1>Comic</h1>
-<div id="xkcd"></div>
+        $("#submit").click(function() {
+          rand = Math.floor(Math.random() * (num + 1));
+          run();
+        });
 
-<button type="button" id="submit">Get a Random Comic</button>
+        var run = function() {
+          $.ajax({
+            url: myurl + "/" + rand,
+            crossDomain: true,
+            dataType: "jsonp",
+            success: function(json) {
+              console.log(rand);
+              console.log("Original:\n" + json.transcript);
+              read_text = json.transcript.split("[").join("").split("]").join("").split(":").join(",").split("{").join("").split("}").join("").split("<").join("").split(">").join("").split("*").join("").split("_").join("");
+              if (read_text === "") {
+                read_text = json.alt;
+              }
+              // Should get rid of all conflicting special characters, I'm sure there's a better way of doing this -- may need to add more
 
-<script>
+              // buttons could be improved
+              $("#theTitle").html(json.title);
+              $("#xkcd").html("<img src = '" + json.img + "'>");
+              console.log("Parsed:\n" + read_text);
+              // probably better to not have this automatic
+            }
+          });
+        };
 
-$("#submit").click(function () {
-
-    var myurl= "http://dynamic.xkcd.com/api-0/jsonp/comic";
-    $.ajax({
-        url : myurl,
-        crossDomain : true,
-        dataType : "jsonp",
-        success : function(parsed_json) {
-            var rand = Math.floor(Math.random() * (parsed_json.num + 1));
-            console.log(rand);
-            $.ajax({
-                url : myurl + "/" + rand,
-                crossDomain : true,
-                dataType : "jsonp",
-                success : function (json) {
-                    var read_text = json.transcript.split("[").join("").split("]").join("").split(":").join(",").split("{").join("").split("}").join("").split("<").join("").split(">").join("").split("\n").join("  ").split("*").join("");
-                    // Should get rid of all conflicting special characters, I'm sure there's a better way of doing this -- may need to add more
-
-                    // buttons could be improved
-                    $("#xkcd").html ("<img src = '" + json.img +"'>" +
-                        "<br><br><button type='button' id='play' onclick='play()'>Play</button><button type='button' id='pause' onclick='pause()'>Pause</button><br><br>"
-                    );
-                    responsiveVoice.speak(read_text, "US English Female"); // probably better to not have this automatic
-                }
-            });
-        }
-    });
-});
-
-function play () {
-    responsiveVoice.resume();
-}
-
-function pause () {
-    responsiveVoice.pause();
-}
-
-</script>
+        $("#play").click(function() {
+          console.log("play was clicked");
+          responsiveVoice.speak(read_text, "US English Female", {
+            rate: 0.9
+          });
+        });
+        $("#resume").click(function() {
+          responsiveVoice.resume();
+        });
+        $("#pause").click(function() {
+          responsiveVoice.pause();
+        });
+      });
+    </script>
 
 
 </body>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 </html>
