@@ -129,7 +129,7 @@
 
               // buttons could be improved
               $("#theTitle").html(rand + ": " + json.title);
-              $("#xkcd").html("<img src = '" + json.img + "'><br><br><p>" + json.alt + "</p>");
+              $("#xkcd").html("<p>" + json.alt + "</p><br><img src = '" + json.img + "'>");
               console.log("Parsed:\n" + read_text);
               // probably better to not have this automatic
             }
