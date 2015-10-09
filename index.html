@@ -130,6 +130,20 @@
               // buttons could be improved
               $("#theTitle").html(rand + ": " + json.title);
               $("#xkcd").html("<img src = '" + json.img.slice(0, 4) + "s" + json.img.slice(4) + "' title=\"" + json.alt + "\">");
+              if (rand == 1) {
+                $("#first").attr('disabled', 'disabled');
+                $("#previous").attr('disabled', 'disabled');
+              } else {
+                $("#first").removeAttr('disabled', 'disabled');
+                $("#previous").removeAttr('disabled', 'disabled');
+              }
+              if (rand == num) {
+                $("#last").attr('disabled', 'disabled');
+                $("#next").attr('disabled', 'disabled');
+              } else {
+                $("#last").removeAttr('disabled', 'disabled');
+                $("#next").removeAttr('disabled', 'disabled');
+              }
               console.log("Parsed:\n" + read_text);
               // probably better to not have this automatic
             }
