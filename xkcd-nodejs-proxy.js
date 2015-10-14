@@ -11,18 +11,21 @@ http.createServer(function(req, res) {
     http.get("http://xkcd.com/" + urlObj.query["q"] + "info.0.json", function(response) {
       response.setEncoding('utf8')
       response.on('data', function(d) {
+	try{
 	res.setHeader("Content-Type", "application/json");
 	res.writeHead(200);
-        res.write(d);
-      });
-      response.on('end', function() {
-        res.end();
-      });
-    }).on('error', function(e) {
+        res.end(d);
+	}
+	catch(e){}
+	});
+      //response.on('end', function() {
+      //  res.end();
+      //});
+    })//.on('error', function(e) {
       //console.log("Got error: " + e.message);
-      res.write("error");
-      res.end();
-    });
+      //res.write("error");
+      //res.end();
+    //});
 
 
  // } else {
