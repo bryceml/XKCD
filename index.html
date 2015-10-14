@@ -63,12 +63,12 @@
       $(document).ready(function() {
         var rand;
         var num;
-        var myurl = "https://dynamic.xkcd.com/api-0/jsonp/comic";
+        var myurl = "/node?q=";
         var read_text;
         $.ajax({
           url: myurl,
-          crossDomain: true,
-          dataType: "jsonp",
+          //crossDomain: true,
+          dataType: "json",
           success: function(parsed_json) {
             num = parsed_json.num;
             rand = parsed_json.num;
@@ -115,9 +115,9 @@
 
         var run = function() {
           $.ajax({
-            url: myurl + "/" + rand,
-            crossDomain: true,
-            dataType: "jsonp",
+            url: myurl + rand + "/",
+            //crossDomain: true,
+            dataType: "json",
             success: function(json) {
               console.log("Original:\n" + json.transcript);
               read_text = json.transcript.split("[").join("").split("]").join(".").split(":").join(";").split("{").join("").split("}").join("").split("<").join("").split(">").join("").split("*").join("").split("_").join("").split(
