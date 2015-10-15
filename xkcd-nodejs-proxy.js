@@ -1,5 +1,6 @@
 var fs = require('fs');
 var http = require('http');
+var https = require('https');
 var url = require('url');
 //var ROOT_DIR = ".";
 http.createServer(function(req, res) {
@@ -8,7 +9,7 @@ http.createServer(function(req, res) {
   //console.log(urlObj);
   //if (urlObj.pathname == "/getxkcd") {
     //console.log("In REST SERVICE")
-    http.get("http://xkcd.com/" + urlObj.query["q"] + "info.0.json", function(response) {
+    https.get("https://xkcd.com/" + urlObj.query["q"] + "info.0.json", function(response) {
       response.setEncoding('utf8')
       response.on('data', function(d) {
 	try{
