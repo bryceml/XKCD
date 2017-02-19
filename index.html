@@ -136,7 +136,7 @@
 
               // buttons could be improved
               $("#theTitle").html("<a href=\"https://xkcd.com/" + rand + "/\"><h1>" + rand + ": " + json.title + "</h1></a>");
-              $("#xkcd").html("<img src = '" + json.img.slice(0, 4) + "s" + json.img.slice(4) + "' title=\"" + json.alt.replace(/\"/g, "&quot;") + "\">");
+              $("#xkcd").html("<img src = '" + json.img + "' title=\"" + json.alt.replace(/\"/g, "&quot;") + "\">");
               if (rand == 1) {
                 $("#first").attr('disabled', 'disabled');
                 $("#previous").attr('disabled', 'disabled');
